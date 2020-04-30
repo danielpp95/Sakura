@@ -4,11 +4,11 @@
 </script>
 
 <style>
-    .Input {
+    .InputNumber {
         width: 100%;
     }
 
-    .Input-input {
+    .InputNumber-input {
         width: 100%;
         padding: 12px 20px;
         display: inline-block;
@@ -19,11 +19,11 @@
     }
 </style>
 
-<div class="Input">
+<div class="InputNumber">
     <label>{placeholder}</label>
     <input
-        class="Input-input"
-        type="text"
+        class="InputNumber-input"
+        type="number"
         placeholder={placeholder}
         bind:value={$value} >
 </div>

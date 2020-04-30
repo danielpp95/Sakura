@@ -1,12 +1,8 @@
 <script>
     export let value;
-
-    function handleSelect(sender){
-        value.update(x => x = parseInt(sender.target.value));
-    }
 </script>
 
-<select on:change={handleSelect}>
+<select bind:value={$value} >
     <option value="0">Select Card</option>
     <option value="1">Clow</option>
     <option value="2">Sakura</option>

@@ -1,6 +1,11 @@
 <script>
+    import { db } from '../firebase';
+    import { collectionData } from 'rxfire/firestore';
+    import { startWith } from 'rxjs/operators';
+
     import Input from '../components/Input.svelte';
     import InputImage from '../components/InputImage.svelte';
+    import InputNumber from '../components/InputNumber.svelte';
     import Select from '../components/Select.svelte';
     import {
         cardNameEN,
@@ -10,10 +15,36 @@
         CardNumber,
         img,
         type
-    } from '../stores/card'
+    } from '../stores/card';
 
-    function handleSubmit() {
-        alert('test');
+    async function handleSubmit() {
+        const query = db.collection('cards');
+
+        await query.add({
+            "name": {
+                "en": $cardNameEN,
+                "es": $cardNameES,
+            },
+            "chapter": {
+                "anime": $ChapterAnime,
+                "manga": $ChapterManga,
+            },
+            "img": $img,
+            "number": $CardNumber,
+            "type": $type
+        })
+        .then(success => {
+            cardNameEN.update(x => x = '');
+            cardNameES.update(x => x = '');
+            ChapterAnime.update(x => x = '');
+            ChapterManga.update(x => x = '');
+            CardNumber.update(x => x = '');
+            img.update(x => x = '');
+            type.update(x => x = 0);
+        })
+        .catch(error => {
+            alert('Error uploading card.')
+        });
     }
 </script>
 
@@ -39,11 +70,11 @@
 </style>
 
 <div class="CardForm">
-    <Input placeholder="Card EN" value={cardNameEN}/>
-    <Input placeholder="Card ES" value={cardNameES}/>
-    <Input placeholder="Chapter manga" value={ChapterManga} type="number"/>
-    <Input placeholder="Chapter anime" value={ChapterAnime} type="number"/>
-    <Input placeholder="Card number" value={CardNumber} type="number"/>
+    <Input placeholder="Card EN" value={cardNameEN} />
+    <Input placeholder="Card ES" value={cardNameES} />
+    <InputNumber placeholder="Chapter manga" value={ChapterManga} />
+    <InputNumber placeholder="Chapter anime" value={ChapterAnime} />
+    <InputNumber placeholder="Card number" value={CardNumber} />
     <InputImage files={img} />
 
     <Select value={type} />
