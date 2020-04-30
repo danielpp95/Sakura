@@ -1,1 +1,3 @@
 npm i -D @babel/core @babel/preset-env @babel/polyfill babel-loader svelte-loader webpack webpack-cli html-webpack-plugin svelte webpack-dev-server
+npm i rxfire firebase rxjs --save
+npm install file-loader --save-dev
