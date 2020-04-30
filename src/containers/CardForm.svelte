@@ -1,7 +1,8 @@
 <script>
-    import { db } from '../firebase';
+    import { db, storage } from '../firebase';
     import { collectionData } from 'rxfire/firestore';
     import { startWith } from 'rxjs/operators';
+    import { put, getDownloadURL } from 'rxfire/storage';
 
     import Input from '../components/Input.svelte';
     import InputImage from '../components/InputImage.svelte';
@@ -20,31 +21,61 @@
     async function handleSubmit() {
         const query = db.collection('cards');
 
-        await query.add({
-            "name": {
-                "en": $cardNameEN,
-                "es": $cardNameES,
-            },
-            "chapter": {
-                "anime": $ChapterAnime,
-                "manga": $ChapterManga,
-            },
-            "img": $img,
-            "number": $CardNumber,
-            "type": $type
-        })
-        .then(success => {
-            cardNameEN.update(x => x = '');
-            cardNameES.update(x => x = '');
-            ChapterAnime.update(x => x = '');
-            ChapterManga.update(x => x = '');
-            CardNumber.update(x => x = '');
-            img.update(x => x = '');
-            type.update(x => x = 0);
-        })
-        .catch(error => {
-            alert('Error uploading card.')
-        });
+        var cardType = '';
+        
+        switch ($type) {
+            case "1":
+                cardType = 'Clow'
+                break;
+            case "2":
+                cardType = 'Sakura'
+                break;
+            case "3":
+                cardType = 'Clear'
+                break;
+            default:
+                alert('Card Type Invalid');
+                return;
+        }
+
+        var dataRef = storage.ref(`${cardType}/${$cardNameEN}-${new Date().getTime()}.png`);
+
+        await put(
+            dataRef,
+            $img[0],
+            {type: 'image/png'})
+            .subscribe(snap => {
+                if (snap.bytesTransferred === snap.totalBytes) {
+                    const url = getDownloadURL(dataRef).subscribe(url => {
+                        query.add({
+                            "name": {
+                                "en": $cardNameEN,
+                                "es": $cardNameES,
+                            },
+                            "chapter": {
+                                "anime": $ChapterAnime,
+                                "manga": $ChapterManga,
+                            },
+                            "img": url,
+                            "number": $CardNumber,
+                            "type": $type
+                        })
+                        .then(success => {
+                            cardNameEN.update(x => x = '');
+                            cardNameES.update(x => x = '');
+                            ChapterAnime.update(x => x = '');
+                            ChapterManga.update(x => x = '');
+                            CardNumber.update(x => x = '');
+                            img.update(x => x = '');
+                            type.update(x => x = 0);
+                        })
+                        .catch(error => {
+                            alert('Error uploading card.')
+                        });
+                    });
+                }
+            }
+        );
     }
 </script>
 
