@@ -1,3 +1,15 @@
+<script>
+    import { blur } from 'svelte/transition';
+    import CardForm from '../containers/CardForm.svelte'
+    import Modal from './Modal.svelte'
+
+    let isModal = false;
+
+    function handleModal() {
+        isModal = !isModal;
+    }
+</script>
+
 <style>
     .Header {
         background-color: rgb(250, 155, 186);
@@ -62,6 +74,14 @@
 </style>
 
 <div class="Header">
+    {#if isModal}
+         <div transition:blur>
+            <Modal on:click={handleModal}>
+                <CardForm />
+            </Modal>
+         </div>
+    {/if}
+
     <div class="Header-container">
         <div class="Header-content">
             <div class="Header-logo">
@@ -71,7 +91,7 @@
             <div class="Header-nav">
                 <ul>
                     <li>
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-plus" on:click={handleModal}></i>
                     </li>
                 </ul>
             </div>

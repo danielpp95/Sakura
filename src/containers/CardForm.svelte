@@ -82,13 +82,22 @@
 <style>
     .CardForm {
         padding: 20px;
-        width: 66%;
-        height: auto;
         background-color: #ccc;
-        display: flex;
+        max-height: 100vh;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        z-index: 9;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        overflow: auto;
+        box-sizing: border-box;
+    }
+
+    .CardForm-container {
+        padding: 10px 20px;
     }
 
     .Button {
@@ -101,14 +110,16 @@
 </style>
 
 <div class="CardForm">
-    <Input placeholder="Card EN" value={cardNameEN} />
-    <Input placeholder="Card ES" value={cardNameES} />
-    <InputNumber placeholder="Chapter manga" value={ChapterManga} />
-    <InputNumber placeholder="Chapter anime" value={ChapterAnime} />
-    <InputNumber placeholder="Card number" value={CardNumber} />
-    <InputImage files={img} />
+    <div class="CardForm-container">
+        <Input placeholder="Card EN" value={cardNameEN} />
+        <Input placeholder="Card ES" value={cardNameES} />
+        <InputNumber placeholder="Chapter manga" value={ChapterManga} />
+        <InputNumber placeholder="Chapter anime" value={ChapterAnime} />
+        <InputNumber placeholder="Card number" value={CardNumber} />
+        <InputImage files={img} />
 
-    <Select value={type} />
+        <Select value={type} />
 
-    <button on:click={handleSubmit} class="Button">Save</button>
+        <button on:click={handleSubmit} class="Button">Save</button>
+    </div>
 </div>
