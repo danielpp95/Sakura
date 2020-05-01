@@ -68,6 +68,7 @@
                             CardNumber.update(x => x = '');
                             img.update(x => x = '');
                             type.update(x => x = 0);
+                            alert('Success')
                         })
                         .catch(error => {
                             alert('Error uploading card.')
@@ -81,8 +82,8 @@
 
 <style>
     .CardForm {
-        padding: 20px;
-        background-color: #ccc;
+        padding: 30px 40px;
+        background-color: rgb(255, 184, 204);
         max-height: 100vh;
         flex-direction: column;
         justify-content: center;
@@ -94,25 +95,41 @@
         transform: translate(-50%, -50%);
         overflow: auto;
         box-sizing: border-box;
+        color: var(--text-color);
+        border-radius: 4px;
     }
 
     .CardForm-container {
-        padding: 10px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .Button {
         padding: 10px 20px;
         border-radius: 4px;
         border-color: transparent;
-        width: 33%;
         margin-top: 20px;
+        background-color: var(--primary-color);
+    }
+
+    .Button:hover {
+        background-color: var(--primary-color-alt);
+        cursor: pointer;
+    }
+
+    h2 {
+        color: black;
+        margin-bottom: 20px;
     }
 </style>
 
 <div class="CardForm">
     <div class="CardForm-container">
-        <Input placeholder="Card EN" value={cardNameEN} />
-        <Input placeholder="Card ES" value={cardNameES} />
+        <h2>Card Creation</h2>
+        <Input placeholder="Card name EN" value={cardNameEN} />
+        <Input placeholder="Card name ES" value={cardNameES} />
         <InputNumber placeholder="Chapter manga" value={ChapterManga} />
         <InputNumber placeholder="Chapter anime" value={ChapterAnime} />
         <InputNumber placeholder="Card number" value={CardNumber} />
@@ -120,6 +137,8 @@
 
         <Select value={type} />
 
-        <button on:click={handleSubmit} class="Button">Save</button>
+        <div>
+            <button on:click={handleSubmit} class="Button">Save</button>
+        </div>
     </div>
 </div>

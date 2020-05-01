@@ -12,7 +12,7 @@
         width: 100%;
         padding: 12px 20px;
         display: inline-block;
-        margin: 8px 0;
+        margin: 5px 0 10px 0;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;

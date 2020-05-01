@@ -12,7 +12,7 @@
 
 <style>
     .Header {
-        background-color: rgb(250, 155, 186);
+        background-color: var(--primary-color);
         position: fixed;
         width: 100%;
         color: black;
