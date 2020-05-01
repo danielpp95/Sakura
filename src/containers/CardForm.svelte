@@ -5,6 +5,7 @@
     import InputImage from '../components/InputImage.svelte';
     import InputNumber from '../components/InputNumber.svelte';
     import Select from '../components/Select.svelte';
+    import Progressbar from '../components/Progressbar.svelte';
     import {
         cardNameEN,
         cardNameES,
@@ -14,6 +15,8 @@
         img,
         type
     } from '../stores/card';
+
+    let uploadValue = 0;
 
     async function handleSubmit() {
         const query = db.collection('cards');
@@ -49,7 +52,8 @@
                     let bytesTransferred = snapshot.bytesTransferred;
                     const totalBytes = snapshot.totalBytes;
 
-                    var percentage = bytesTransferred / totalBytes * 100;
+                    var percentage = bytesTransferred / totalBytes;
+                    uploadValue = percentage - 0.1;
                 },
                 err => console.log(err),
                 () => {
@@ -67,6 +71,7 @@
 
         cardRef.set(CardInfo(downloadURL))
             .then(success => {
+                uploadValue = 1;
                 cardNameEN.update(x => x = '');
                 cardNameES.update(x => x = '');
                 ChapterAnime.update(x => x = '');
@@ -74,7 +79,6 @@
                 CardNumber.update(x => x = '');
                 img.update(x => x = '');
                 type.update(x => x = 0);
-                alert('Success')
             });
     }
 
@@ -155,5 +159,7 @@
         <div>
             <button on:click={handleSubmit} class="Button">Save</button>
         </div>
+
+        <Progressbar value={uploadValue}/>
     </div>
 </div>
