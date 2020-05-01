@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "webpack-dev-server --open --mode development"
+    "dev": "webpack-dev-server --open --mode development",
+    "clean": "rd /s /q  dist"
   },
   "author": "",
   "license": "ISC",
