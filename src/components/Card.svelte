@@ -29,7 +29,6 @@
 
     function random(min, max) {
         var numberType = Math.random();
-        console.log(numberType)
 
         if (numberType <= 0.5) {
             return randomInt(-max, -min);
@@ -37,8 +36,6 @@
            return randomInt(min,max);
         }
     }
-
-    // var img = document.getElementById(`${card.name.en}-${card.number}`);
 </script>
 
 <style>

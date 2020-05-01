@@ -4,7 +4,6 @@
 </script>
 
 <div class="App">
-    <!-- <CardForm /> -->
     <Header />
     <CardsGrid />
 </div>

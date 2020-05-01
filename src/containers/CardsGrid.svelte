@@ -1,25 +1,18 @@
 <script>
     import { onMount } from 'svelte'
     import { db } from '../firebase.js';
-    import { map } from 'rxjs/operators';
-    import { collection } from 'rxfire/firestore';
 
     import Card from '../components/Card.svelte'
 
-    $:cards = [].sort((a,b)=>a.number-b.number)
+    let cards = [].sort((a,b)=>a.number-b.number)
 
     onMount(async ()=> {
-        collection(db.collection('cards'))
-            .pipe(
-                map(
-                    docs => 
-                        docs.map(d => {
-                            d.data();
-                            
-                            cards = [...cards, d.data()]
-                        })
-                )
-            ).subscribe();
+        db.collection('cards').get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    cards = [...cards, doc.data()]
+                });
+            })
     });
 </script>
 
