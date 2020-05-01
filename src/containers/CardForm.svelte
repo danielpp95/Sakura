@@ -1,8 +1,5 @@
 <script>
     import { db, storage } from '../firebase';
-    import { collectionData } from 'rxfire/firestore';
-    import { startWith } from 'rxjs/operators';
-    import { put, getDownloadURL } from 'rxfire/storage';
 
     import Input from '../components/Input.svelte';
     import InputImage from '../components/InputImage.svelte';
@@ -38,45 +35,63 @@
                 return;
         }
 
-        var dataRef = storage.ref(`${cardType}/${$cardNameEN}-${new Date().getTime()}.png`);
+        var dataRef = storage.ref(`1-${cardType}/${$cardNameEN}-${new Date().getTime()}.png`);
 
-        await put(
-            dataRef,
-            $img[0],
-            {type: 'image/png'})
-            .subscribe(snap => {
-                if (snap.bytesTransferred === snap.totalBytes) {
-                    const url = getDownloadURL(dataRef).subscribe(url => {
-                        query.add({
-                            "name": {
-                                "en": $cardNameEN,
-                                "es": $cardNameES,
-                            },
-                            "chapter": {
-                                "anime": $ChapterAnime,
-                                "manga": $ChapterManga,
-                            },
-                            "img": url,
-                            "number": $CardNumber,
-                            "type": $type
+        await UploadImage(dataRef);
+    }
+
+    async function UploadImage(dataRef) {
+        let uploadTask  = dataRef.put($img[0]);
+        uploadTask
+            .on(
+                'state_changed',
+                snapshot => {
+                    let bytesTransferred = snapshot.bytesTransferred;
+                    const totalBytes = snapshot.totalBytes;
+
+                    var percentage = bytesTransferred / totalBytes * 100;
+                },
+                err => console.log(err),
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL()
+                        .then(async downloadURL => {
+                            console.log('File available at', downloadURL);
+                            await UploadCard(downloadURL);
                         })
-                        .then(success => {
-                            cardNameEN.update(x => x = '');
-                            cardNameES.update(x => x = '');
-                            ChapterAnime.update(x => x = '');
-                            ChapterManga.update(x => x = '');
-                            CardNumber.update(x => x = '');
-                            img.update(x => x = '');
-                            type.update(x => x = 0);
-                            alert('Success')
-                        })
-                        .catch(error => {
-                            alert('Error uploading card.')
-                        });
-                    });
                 }
-            }
-        );
+            );
+    }
+
+    async function UploadCard(downloadURL) {
+        var cardRef = db.collection('cards2').doc();
+
+        cardRef.set(CardInfo(downloadURL))
+            .then(success => {
+                cardNameEN.update(x => x = '');
+                cardNameES.update(x => x = '');
+                ChapterAnime.update(x => x = '');
+                ChapterManga.update(x => x = '');
+                CardNumber.update(x => x = '');
+                img.update(x => x = '');
+                type.update(x => x = 0);
+                alert('Success')
+            });
+    }
+
+    function CardInfo(downloadURL) {
+        return {
+            "name": {
+                "en": $cardNameEN,
+                "es": $cardNameES,
+            },
+            "chapter": {
+                "anime": $ChapterAnime,
+                "manga": $ChapterManga,
+            },
+            "img": downloadURL,
+            "number": $CardNumber,
+            "type": $type
+        };
     }
 </script>
 
