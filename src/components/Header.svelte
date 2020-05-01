@@ -16,6 +16,8 @@
         position: fixed;
         width: 100%;
         color: black;
+        top: 0;
+        z-index: 9;
     }
 
     .Header-container {
