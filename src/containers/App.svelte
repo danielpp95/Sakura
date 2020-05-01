@@ -1,10 +1,12 @@
 <script>
     import Header from '../components/Header.svelte'
+    import CardsGrid from './CardsGrid.svelte'
 </script>
 
 <div class="App">
     <!-- <CardForm /> -->
     <Header />
+    <CardsGrid />
 </div>
 
 <style>
