@@ -9,7 +9,6 @@
 <style>
     img {
         max-width: 150px;
-        /* position: absolute; */
     }
 
     .Card {

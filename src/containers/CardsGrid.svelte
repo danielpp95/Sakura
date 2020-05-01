@@ -26,8 +26,17 @@
 <style>
     .CardsGrid {
         padding: 4em 0 0 0;
+    }
+
+    .CardsGrid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
+        grid-template-columns: minmax(auto, 936px);
+        justify-content: center;
+    }
+
+    .CardsGrid-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 200px));
         justify-content: center;
         align-content: center;
         grid-gap: 2em;
@@ -35,9 +44,14 @@
 </style>
 
 <div class="CardsGrid">
-    {#each [...cards].sort((a,b)=>a.number-b.number) as card (card.number)}
-        <Card card={card} />
-    {:else}
-         <p>Nothing here</p>
-    {/each}
+    <div class="CardsGrid-container">
+        <div class="CardsGrid-content">
+            {#each [...cards].sort((a,b)=>a.number-b.number) as card (card.number)}
+                <Card card={card} />
+            {:else}
+                <p>Nothing here</p>
+            {/each}
+        </div>
+    </div>
+
 </div>
