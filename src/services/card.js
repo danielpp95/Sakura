@@ -76,3 +76,28 @@ function CardInfo(card, downloadURL) {
         "type": card.type
     };
 }
+
+export const GetCards = async function(options = {}) {
+    let {types, limit = 12} = options;
+
+    let collection =  db.collection('cards');
+
+    let cards = [];
+    
+    if(types) {
+        
+        collection = collection.where("type", "in", types);
+    }
+
+    if(limit > 0) {
+        collection = collection.limit(limit);
+    }
+    await collection.get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                cards = [...cards, doc.data()]
+            });
+        })
+
+    return cards;
+}

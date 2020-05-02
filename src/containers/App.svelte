@@ -1,12 +1,8 @@
 <script>
     import Header from '../components/Header.svelte'
-    import CardsGrid from './CardsGrid.svelte'
+    import CardsContainer from './CardsContainer.svelte'
+    import MainContainer from '../components/MainContainer.svelte'
 </script>
-
-<div class="App">
-    <Header />
-    <CardsGrid />
-</div>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
@@ -27,7 +23,19 @@
 
     :global(:root) {
 		--text-color: rgba(38, 38, 38, 0.8);
+		--text-color-unactivated: rgba(80, 79, 79, 0.8);
         --primary-color: rgb(250, 155, 186);
         --primary-color-alt: rgb(248, 136, 172);
+        --primary-color-hover: var(--primary-color-alt);
+        --primary-color-alt-hover: rgb(226, 120, 154);
+        --primary-color-unactivated: rgb(252, 170, 197);
+        --primary-color-alt-unactivated: rgb(252, 161, 190);
 	}
 </style>
+
+<div class="App">
+    <Header />
+    <MainContainer>
+        <CardsContainer />
+    </MainContainer>
+</div>

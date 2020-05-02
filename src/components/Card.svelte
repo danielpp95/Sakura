@@ -89,7 +89,7 @@
 <div class="Card">
     <div class="Card-container">
         <img
-            transition:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
+            in:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
             use:lazy="{{src: card.img}}"
             class:Hide={!visible}
             src={card.img}
