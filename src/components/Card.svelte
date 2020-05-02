@@ -1,5 +1,5 @@
 <script>
-    import { fly } from 'svelte/transition'
+    import { fly, fade } from 'svelte/transition'
 
     export let card;
     let showContent = false;
@@ -10,16 +10,13 @@
     const loaded = new Map();
     let visible = false;
     function lazy(node, data) {
-        if (loaded.has(data.src)) {
-            node.setAttribute('src', data.src);
-        } else {
             const img = new Image();
             img.src = data.src;
             img.onload = () => {
                 loaded.set(data.src, img);
                 node.setAttribute('src', data.src); 
                 visible = true;
-            };
+            
         }
     }
 
@@ -80,17 +77,22 @@
         visibility: hidden;
     }
 
+    .loader {
+        display: none
+    }
+
 </style>
 
 
-<!-- {#if visible} -->
-     <!-- content here -->
+<div class="loader" use:lazy="{{src: card.img}}"></div>
 
-<div class="Card">
+{#if visible}
+<div
+    class="Card"
+    in:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
+    out:fade>
     <div class="Card-container">
         <img
-            in:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
-            use:lazy="{{src: card.img}}"
             class:Hide={!visible}
             src={card.img}
             alt={card.name.en}
@@ -104,4 +106,4 @@
     </div>
 </div>
 
-<!-- {/if} -->
+{/if}
