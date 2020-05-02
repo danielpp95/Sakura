@@ -1,22 +1,54 @@
 <script>
     import { fly, fade } from 'svelte/transition'
+    import { onMount } from 'svelte'
+    import iconUsa from '../assets/images/icons/united-states-of-america.svg';
+    import iconSpain from '../assets/images/icons/spain.svg';
+    import iconcomic from '../assets/images/icons/comic.svg';
+    import iconTv from '../assets/images/icons/tv.svg';
+    import iconId from '../assets/images/icons/id.svg';
 
     export let card;
+
+    let background;
+    let image = card.img;
+
+    onMount(async () => {
+        switch (card.type) {
+            case "1":
+                background = require('../assets/images/Reverso_Clow.jpg').default;
+                break;
+            case "2":
+                background = require('../assets/images/Reverso_Sakura.jpg').default;
+                break;
+            case "3":
+                background = require('../assets/images/Reverso_clear_card.png').default;
+                break;
+        
+            default:
+                break;
+        }
+    });
+
     let showContent = false;
 
-    function enter() { showContent = true; }
-    function leave() { showContent = false; }
+    function enter() {
+        showContent = true;
+        image = background
+    }
+    function leave() {
+        showContent = false;
+        image = card.img
+    }
 
     const loaded = new Map();
     let visible = false;
     function lazy(node, data) {
-            const img = new Image();
-            img.src = data.src;
-            img.onload = () => {
-                loaded.set(data.src, img);
-                node.setAttribute('src', data.src); 
-                visible = true;
-            
+        const img = new Image();
+        img.src = data.src;
+        img.onload = () => {
+            loaded.set(data.src, img);
+            node.setAttribute('src', data.src); 
+            visible = true;
         }
     }
 
@@ -40,6 +72,10 @@
         max-width: 150px;
     }
 
+    img, .Card-content {
+        border-radius: 10px;
+    }
+
     .Card {
         position: relative;
         display: flex;
@@ -55,22 +91,22 @@
     }
 
     .Card-content {
-        background-color: white;
+        /* background-color: white; */
         position: absolute;
         width: 150px;
         padding: 10px;
         box-sizing: border-box;
         height: 100%;
-        border-radius: 4px;
         justify-content: center;
         align-items: center;
         display: flex;
         flex-direction: column;
-        
+        background-color: rgba(255, 255, 255, 0.466);
+
     }
 
     .Card-content:hover {
-        display: flex
+        display: flex;
     }
 
     .Hide {
@@ -79,6 +115,19 @@
 
     .loader {
         display: none
+    }
+
+    p {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        font-weight: 700;
+    }
+    
+    p img {
+        max-width: 24px;
+        border-radius: 0;
     }
 
 </style>
@@ -90,17 +139,39 @@
 <div
     class="Card"
     in:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
-    out:fade>
+    out:fade
+    on:mouseenter={enter}
+    on:mouseleave={leave}
+    >
     <div class="Card-container">
         <img
             class:Hide={!visible}
-            src={card.img}
+            src={image}
             alt={card.name.en}
-            on:mouseenter={enter}
+            
             >
         {#if showContent}
-            <div class="Card-content" on:mouseleave={leave}>
-                {card.name.en}
+            <div class="Card-content">
+                <p>
+                    <img src={iconUsa} alt="">
+                    {card.name.en}
+                </p>
+                <p>
+                    <img src={iconSpain} alt="">
+                    {card.name.es}
+                </p>
+                <p>
+                    <img src={iconcomic} alt="">
+                    {card.chapter.manga != 0 ? card.chapter.manga : 'N/A'}
+                </p>
+                <p>
+                    <img src={iconTv} alt="">
+                    {card.chapter.anime != 0 ? card.chapter.anime : 'N/A'}
+                </p>
+                <p>
+                    <img src={iconId} alt="">
+                    {card.number}
+                </p>
             </div>
         {/if}
     </div>
