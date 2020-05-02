@@ -1,5 +1,6 @@
 <script>
-    import { db, storage } from '../firebase';
+    import { UploadCard } from '../services/card.js';
+    import { Card } from '../model/card.js';
 
     import Input from '../components/Input.svelte';
     import InputImage from '../components/InputImage.svelte';
@@ -18,84 +19,33 @@
 
     let uploadValue = 0;
 
-    async function handleSubmit() {
-        const query = db.collection('cards');
-
-        var cardType = '';
+    function onUploadCallBack({percentage}) {
         
-        switch ($type) {
-            case "1":
-                cardType = 'Clow'
-                break;
-            case "2":
-                cardType = 'Sakura'
-                break;
-            case "3":
-                cardType = 'Clear'
-                break;
-            default:
-                alert('Card Type Invalid');
-                return;
-        }
-
-        var dataRef = storage.ref(`1-${cardType}/${$cardNameEN}-${new Date().getTime()}.png`);
-
-        await UploadImage(dataRef);
+        uploadValue = percentage - 0.1;
     }
 
-    async function UploadImage(dataRef) {
-        let uploadTask  = dataRef.put($img[0]);
-        uploadTask
-            .on(
-                'state_changed',
-                snapshot => {
-                    let bytesTransferred = snapshot.bytesTransferred;
-                    const totalBytes = snapshot.totalBytes;
-
-                    var percentage = bytesTransferred / totalBytes;
-                    uploadValue = percentage - 0.1;
-                },
-                err => console.log(err),
-                () => {
-                    uploadTask.snapshot.ref.getDownloadURL()
-                        .then(async downloadURL => {
-                            console.log('File available at', downloadURL);
-                            await UploadCard(downloadURL);
-                        })
-                }
-            );
+    function onSuccess() {
+        uploadValue = 1;
+        cardNameEN.update(x => x = '');
+        cardNameES.update(x => x = '');
+        ChapterAnime.update(x => x = '');
+        ChapterManga.update(x => x = '');
+        CardNumber.update(x => x = '');
+        img.update(x => x = '');
+        type.update(x => x = 0);
     }
 
-    async function UploadCard(downloadURL) {
-        var cardRef = db.collection('cards2').doc();
+    async function handleSubmit() {
+        var card = new Card(
+            $cardNameEN,
+            $cardNameES,
+            $ChapterAnime,
+            $ChapterManga,
+            $CardNumber,
+            $img[0],
+            $type);
 
-        cardRef.set(CardInfo(downloadURL))
-            .then(success => {
-                uploadValue = 1;
-                cardNameEN.update(x => x = '');
-                cardNameES.update(x => x = '');
-                ChapterAnime.update(x => x = '');
-                ChapterManga.update(x => x = '');
-                CardNumber.update(x => x = '');
-                img.update(x => x = '');
-                type.update(x => x = 0);
-            });
-    }
-
-    function CardInfo(downloadURL) {
-        return {
-            "name": {
-                "en": $cardNameEN,
-                "es": $cardNameES,
-            },
-            "chapter": {
-                "anime": $ChapterAnime,
-                "manga": $ChapterManga,
-            },
-            "img": downloadURL,
-            "number": $CardNumber,
-            "type": $type
-        };
+        await UploadCard(card, onUploadCallBack, onSuccess);
     }
 </script>
 
