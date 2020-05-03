@@ -20,7 +20,6 @@
     let uploadValue = 0;
 
     function onUploadCallBack({percentage}) {
-        
         uploadValue = percentage - 0.1;
     }
 

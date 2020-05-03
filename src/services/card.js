@@ -2,7 +2,7 @@ import { db, storage } from '../firebase';
 
 export const UploadCard = async function (card, onUploadCallBack = null, onSuccess = null) {
     var cardType = '';
-    
+
     switch (card.type) {
         case "1":
             cardType = 'Clow'
@@ -42,7 +42,6 @@ async function UploadImage(dataRef, card, onUploadCallBack, onSuccess) {
             () => {
                 uploadTask.snapshot.ref.getDownloadURL()
                     .then(async downloadURL => {
-                        console.log('File available at', downloadURL);
                         await UploadCardData(card, downloadURL, onSuccess);
                     })
             }
@@ -62,7 +61,8 @@ async function UploadCardData(card, downloadURL, onSuccess) {
 }
 
 function CardInfo(card, downloadURL) {
-    return {
+
+    var cardObject = {
         "name": {
             "en": card.cardNameEN,
             "es": card.cardNameES,
@@ -73,8 +73,11 @@ function CardInfo(card, downloadURL) {
         },
         "img": downloadURL,
         "number": card.CardNumber,
-        "type": card.type
+        "type": card.type,
+        transformed: card.transformed
     };
+
+    return cardObject;
 }
 
 export const GetCards = async function(options = {}) {
@@ -83,9 +86,8 @@ export const GetCards = async function(options = {}) {
     let collection =  db.collection('cards');
 
     let cards = [];
-    
+
     if(types) {
-        
         collection = collection.where("type", "in", types);
     }
 

@@ -1,5 +1,5 @@
 export class Card {
-    constructor(cardNameEN, cardNameES, ChapterAnime, ChapterManga, CardNumber, img, type){
+    constructor(cardNameEN, cardNameES, ChapterAnime, ChapterManga, CardNumber, img, type, transformed = null){
         this.cardNameEN = cardNameEN;
         this.cardNameES = cardNameES;
         this.ChapterAnime = ChapterAnime;
@@ -7,5 +7,6 @@ export class Card {
         this.CardNumber = CardNumber;
         this.img = img;
         this.type = type;
+        this.transformed = transformed;
     }
 }

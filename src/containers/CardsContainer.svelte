@@ -3,6 +3,8 @@
     import Switch from '../components/Switch.svelte'
     import { GetCards } from '../services/card'
 
+    import {  } from "svelte";
+
     let cards = [];
     let getClow = true;
     let getSakura = true;
@@ -20,7 +22,7 @@
             case 'getClear':
                 getClear = !getClear
                 break
-        
+
             default:
                 alert('invalid option')
                 break;
@@ -45,7 +47,7 @@
         }
         cards = await GetCards({
             types: types.length > 0 ? types : null,
-            limit: 4
+            limit: 0
         });
     }
 </script>
@@ -59,10 +61,10 @@
     .CardsContainer-filters {
         flex-wrap: wrap;
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
+        margin-bottom: 2em;
     }
-
 
     button {
         --bezel-color: var(--primary-color);
@@ -113,6 +115,9 @@
             <button on:click={handleSearch} disabled={!active}>search</button>
         </div>
 
-        <CardGrid cards={cards}/>
+        {#if cards}
+             <!-- content here -->
+            <CardGrid cards={cards}/>
+        {/if}
     </div>
 </div>
