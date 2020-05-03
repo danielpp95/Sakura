@@ -3,8 +3,6 @@
     import Switch from '../components/Switch.svelte'
     import { GetCards } from '../services/card'
 
-    import {  } from "svelte";
-
     let cards = [];
     let getClow = true;
     let getSakura = true;
