@@ -7,7 +7,7 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Rochester&display=swap');
-    
+
     :global(body) {
         font-family: 'Lato', sans-serif;
         margin: 0;
@@ -22,6 +22,7 @@
     }
 
     :global(:root) {
+        cursor: url(https://vignette.wikia.nocookie.net/ccs/images/3/3e/Clow_Cursor1.png),auto !important;
 		--text-color: rgba(38, 38, 38, 0.8);
 		--text-color-unactivated: rgba(80, 79, 79, 0.8);
         --primary-color: rgb(250, 155, 186);
