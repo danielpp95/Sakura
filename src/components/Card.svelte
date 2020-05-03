@@ -6,6 +6,7 @@
     import iconcomic from '../assets/images/icons/comic.svg';
     import iconTv from '../assets/images/icons/tv.svg';
     import iconId from '../assets/images/icons/id.svg';
+    import iconChange from '../assets/images/icons/change.svg';
 
     export let card;
 
@@ -102,7 +103,7 @@
         display: flex;
         flex-direction: column;
         background-color: rgba(255, 255, 255, 0.466);
-
+        justify-content: space-evenly;
     }
 
     .Card-content:hover {
@@ -123,6 +124,7 @@
         align-items: center;
         justify-content: space-evenly;
         font-weight: 700;
+        margin: 0;
     }
 
     p img {
@@ -167,6 +169,20 @@
                     <img src={iconTv} alt="">
                     {card.chapter.anime != 0 ? card.chapter.anime : 'N/A'}
                 </p>
+                {#if card.transformed && card.transformed.anime}
+                    <p>
+                        <img src={iconChange} alt="">
+                        <img src={iconTv} alt="">
+                        {card.transformed.anime}
+                    </p> 
+                {/if}
+                {#if card.transformed && card.transformed.manga}
+                    <p>
+                        <img src={iconChange} alt="">
+                        <img src={iconcomic} alt="">
+                        {card.transformed.manga}
+                    </p> 
+                {/if}
                 <p>
                     <img src={iconId} alt="">
                     {card.number}
