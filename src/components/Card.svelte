@@ -23,7 +23,7 @@
             case "3":
                 background = require('../assets/images/Reverso_clear_card.png').default;
                 break;
-        
+
             default:
                 break;
         }
@@ -47,7 +47,7 @@
         img.src = data.src;
         img.onload = () => {
             loaded.set(data.src, img);
-            node.setAttribute('src', data.src); 
+            node.setAttribute('src', data.src);
             visible = true;
         }
     }
@@ -124,7 +124,7 @@
         justify-content: space-evenly;
         font-weight: 700;
     }
-    
+
     p img {
         max-width: 24px;
         border-radius: 0;
@@ -132,14 +132,13 @@
 
 </style>
 
-
 <div class="loader" use:lazy="{{src: card.img}}"></div>
 
 {#if visible}
 <div
     class="Card"
-    in:fly="{{ y: random(500,1000), duration: 2500, x: random(500,1000) }}"
-    out:fade
+    in:fly="{{ y: random(500,1000), duration: 1500, x: random(500,1000) }}"
+
     on:mouseenter={enter}
     on:mouseleave={leave}
     >
@@ -148,7 +147,7 @@
             class:Hide={!visible}
             src={image}
             alt={card.name.en}
-            
+
             >
         {#if showContent}
             <div class="Card-content">
